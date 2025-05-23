@@ -11,6 +11,116 @@ logger = logging.getLogger(__file__)
 
 
 def get_product_list(page, campaign_id, access_token):
+    """Получает список товаров магазина Яндекс-Маркет.
+    
+    Аргументы:
+        page(str): Идентификатор страницы c результатами.
+        campaign_id(int): Идентификатор кампании.
+        access_token(str): Пароль для входа.
+
+    Возвращает:
+        (dict): Словарь json с информацией о товарах.
+
+    Пример корректного использования:
+        {
+        "result": {
+            "paging": {
+                "nextPageToken": "string",
+                "prevPageToken": "string"
+            },
+            "offerMappingEntries": [
+                {
+                    "offer": {
+                        "name": "Ударная дрель Makita HP1630, 710 Вт",
+                        "shopSku": "string",
+                        "category": "string",
+                        "vendor": "LEVENHUK",
+                        "vendorCode": "VNDR-0005A",
+                        "description": "string",
+                        "id": "string",
+                        "feedId": 0,
+                        "barcodes": [
+                            46012300000000
+                        ],
+                        "urls": [
+                            "string"
+                        ],
+                        "pictures": [
+                            "string"
+                        ],
+                        "manufacturer": "string",
+                        "manufacturerCountries": [
+                            "string"
+                        ],
+                        "minShipment": 0,
+                        "transportUnitSize": 0,
+                        "quantumOfSupply": 0,
+                        "deliveryDurationDays": 0,
+                        "boxCount": 0,
+                        "customsCommodityCodes": [
+                            "string"
+                        ],
+                        "weightDimensions": {
+                            "length": 65.55,
+                            "width": 50.7,
+                            "height": 20,
+                            "weight": 1.001
+                        },
+                        "supplyScheduleDays": [
+                            "MONDAY"
+                        ],
+                        "shelfLifeDays": 0,
+                        "lifeTimeDays": 0,
+                        "guaranteePeriodDays": 0,
+                        "processingState": {
+                            "status": "UNKNOWN",
+                            "notes": [
+                                {
+                                    "type": "ASSORTMENT",
+                                    "payload": "string"
+                                }
+                            ]
+                        },
+                        "availability": "ACTIVE",
+                        "shelfLife": {
+                            "timePeriod": 0,
+                            "timeUnit": "HOUR",
+                            "comment": "string"
+                        },
+                        "lifeTime": {
+                            "timePeriod": 0,
+                            "timeUnit": "HOUR",
+                            "comment": "string"
+                        },
+                        "guaranteePeriod": {
+                            "timePeriod": 0,
+                            "timeUnit": "HOUR",
+                            "comment": "string"
+                        },
+                        "certificate": "string",
+                        "price": 0
+                    },
+                    "mapping": {
+                        "marketSku": 0,
+                        "modelId": 0,
+                        "categoryId": 0
+                    },
+                    "awaitingModerationMapping": {
+                        "marketSku": 0,
+                        "modelId": 0,
+                        "categoryId": 0
+                    },
+                    "rejectedMapping": {
+                        "marketSku": 0,
+                        "modelId": 0,
+                        "categoryId": 0
+                    }
+                }
+            ]
+        }
+
+    
+    """
     endpoint_url = "https://api.partner.market.yandex.ru/"
     headers = {
         "Content-Type": "application/json",
@@ -30,6 +140,32 @@ def get_product_list(page, campaign_id, access_token):
 
 
 def update_stocks(stocks, campaign_id, access_token):
+    """Обновляет остатки товаров.
+
+    Аргументы:
+        stocks(DTO): Данные об остатках товаров.
+        campaign_id(int): Идентификатор кампании.
+        access_token(str): Пароль для входа.
+
+    Возвращает:
+        (dict): Пустой словарь
+
+    Пример корректного использования:
+    {
+        "status": "OK"
+    }
+
+    Пример некорректного использования:
+    {
+        "status": "OK",
+        "errors": [
+            {
+                "code": "string",
+                "message": "string"
+            }
+        ]
+    }
+    """
     endpoint_url = "https://api.partner.market.yandex.ru/"
     headers = {
         "Content-Type": "application/json",
@@ -46,6 +182,32 @@ def update_stocks(stocks, campaign_id, access_token):
 
 
 def update_price(prices, campaign_id, access_token):
+    """Обновляет цены товаров.
+    
+    Аргументы:
+        prices(DTO): Цена с указанием скидки, валюты и времени последнего обновления.
+        campaign_id(int): Идентификатор кампании.
+        access_token(str): Пароль для входа.
+
+    Возвращает:
+        (dict): Пустой словарь.
+
+    Пример корректного использования:
+    {
+        "status": "OK"
+    }
+
+    Пример некорректного использования:
+    {
+        "status": "OK",
+        "errors": [
+            {
+                "code": "string",
+                "message": "string"
+            }
+        ]
+    }
+    """
     endpoint_url = "https://api.partner.market.yandex.ru/"
     headers = {
         "Content-Type": "application/json",
@@ -62,7 +224,15 @@ def update_price(prices, campaign_id, access_token):
 
 
 def get_offer_ids(campaign_id, market_token):
-    """Получить артикулы товаров Яндекс маркета"""
+    """Получает артикулы товаров Яндекс маркета.
+
+    Аргументы:
+        campaign_id(int): Идентификатор кампании.
+        market_token(str): Пароль магазина.
+
+    Возвращает:
+        (list): Артикулы на товары.
+    """
     page = ""
     product_list = []
     while True:
@@ -78,6 +248,16 @@ def get_offer_ids(campaign_id, market_token):
 
 
 def create_stocks(watch_remnants, offer_ids, warehouse_id):
+    """Создает список с отстатками товара.
+
+    Аргументы:
+        watch_remnants(list): Список словарей с данными об остатках товара.
+        offer_ids(list): Артикулы на товары.
+        warehouse_id(int): Идентификатор склада.
+    
+    Возвращает:
+        (list): Количество остатков товара на складе.
+    """
     # Уберем то, что не загружено в market
     stocks = list()
     date = str(datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z")
@@ -123,6 +303,15 @@ def create_stocks(watch_remnants, offer_ids, warehouse_id):
 
 
 def create_prices(watch_remnants, offer_ids):
+    """Устанавливает цены.
+
+    Аргументы:
+        watch_remnants(list): Список словарей с данными об остатках товара.
+        offer_ids(list): Артикулы на товары.
+
+    Возвращает:
+        (list): Список с ценами товаров.
+    """
     prices = []
     for watch in watch_remnants:
         if str(watch.get("Код")) in offer_ids:
