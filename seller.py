@@ -12,19 +12,50 @@ logger = logging.getLogger(__file__)
 
 
 def get_product_list(last_id, client_id, seller_token):
-    """
-    Получает список товаров магазина озон.
+    """Получает список товаров магазина озон.
 
     Аргументы:
-        last_id(str): объект последнего полученного товара.
-        client_id(str): id покупателя.
-        seller_token(str): секретный пароль продавца.
+        last_id(str): Идентификатор последнего полученного товара.
+        client_id(str): Идентификатор клиента.
+        seller_token(str): Секретный пароль продавца.
 
     Возвращает:
-        (dict): словарь json с данными о товарах.
+        (dict): Словарь json с данными о товарах.
 
-    Ошибки:
-    requests.HTTPError: при ошибке выполнения HTTP-запроса.
+    Пример корректного использования функции:
+    {
+        "items": [
+            {
+                "archived": True,
+                "has_fbo_stocks": True,
+                "has_fbs_stocks": True,
+                "is_discounted": True,
+                "offer_id": "136748",
+                "product_id": 223681945,
+                "quants": [
+                    {
+                        "quant_code": "string",
+                        "quant_size": 0
+                    }
+                ]
+            }
+        ],
+        "total": 1,
+        "last_id": "bnVсbA=="
+    }
+
+    Пример некорректного исполнения функции:
+    {
+      "code": 0,
+      "details": [
+        {
+          "typeUrl": "string",
+          "value": "string"
+        }
+      ],
+      "message": "string"
+    }
+
     """
     url = "https://api-seller.ozon.ru/v2/product/list"
     headers = {
@@ -45,15 +76,21 @@ def get_product_list(last_id, client_id, seller_token):
 
 
 def get_offer_ids(client_id, seller_token):
-    """
-    Получает артикулы товаров магазина озон.
+    """Получает артикулы товаров магазина озон.
 
     Аргументы:
-        client_id(str): id покупателя.
-        seller_token(str): секретный пароль продавца.
+        client_id(str): Идентификатор клиента.
+        seller_token(str): Секретный пароль продавца.
 
     Возвращает:
-        (str): артикул на товар.
+        (list): Артикулы на товары.
+
+    Пример корректного использования функции:
+        ["136748", "563421", "036492"]
+
+    Пример некорректного исполнения функции:
+        None
+
     """
     last_id = ""
     product_list = []
@@ -71,16 +108,40 @@ def get_offer_ids(client_id, seller_token):
 
 
 def update_price(prices: list, client_id, seller_token):
-    """
-    Обновляет цены товаров.
+    """Обновляет цены товаров.
 
     Аргументы:
-        prices(list): список с ценами товаров.
-        client_id(str): id покупателя.
-        seller_token(str): секретный пароль продавца.
+        prices(list): Список с ценами товаров.
+        client_id(str): Идентификатор клиента.
+        seller_token(str): Секретный пароль продавца.
 
     Возвращает:
-        (dict): словарь json с данными о товаре и цен.
+        (dict): Словарь json с данными о товаре и цен.
+
+    Пример корректного использования функции:
+    {
+      "result": [
+        {
+          "product_id": 1386,
+          "offer_id": "PH8865",
+          "updated": True,
+          "errors": []
+        }
+      ]
+    }
+
+    Пример некорректного исполнения функции:
+    {
+      "code": 0,
+      "details": [
+        {
+          "typeUrl": "string",
+          "value": "string"
+        }
+      ],
+      "message": "string"
+    }
+
     """
     url = "https://api-seller.ozon.ru/v1/product/import/prices"
     headers = {
@@ -94,16 +155,40 @@ def update_price(prices: list, client_id, seller_token):
 
 
 def update_stocks(stocks: list, client_id, seller_token):
-    """
-    Обновляет остатки.
+    """Обновляет остатки.
 
     Аргументы:
-        stocks(list): список с остатками товара.
-        client_id(str): id покупателя.
-        seller_token(str): секретный пароль продавца.
+        stocks(list): Список с остатками товара.
+        client_id(str): Идентификатор клиента.
+        seller_token(str): Секретный пароль продавца.
 
     Возвращает:
-        (dict): словарь с данными ответа API о статусе обновления и остатках.
+        (dict): Словарь с данными ответа API о статусе обновления и остатках.
+
+    Пример корректного использования функции:
+    {
+      "result": [
+        {
+          "product_id": 55946,
+          "offer_id": "PG-2404С1",
+          "updated": True,
+          "errors": []
+        }
+      ]
+    }
+
+    Пример некорректного исполнения функции:
+    {
+      "code": 0,
+      "details": [
+        {
+          "typeUrl": "string",
+          "value": "string"
+        }
+      ],
+      "message": "string"
+    }
+
     """
     url = "https://api-seller.ozon.ru/v1/product/import/stocks"
     headers = {
@@ -117,11 +202,22 @@ def update_stocks(stocks: list, client_id, seller_token):
 
 
 def download_stock():
-    """
-    Скачивает файл ostatki с сайта casio, извлекает excel файл и считывает из него информацию об остатках.
+    """Скачивает архив ostatki с сайта casio, извлекает excel-файл 
+    считывает информацию и возвращает данные об остатках товара.
 
     Возвращает:
-        (list): список словарей с данными об остатках товара. 
+        (list): Список словарей с данными об остатках товара.
+
+    Пример корректного использования:
+    [
+    {'Remnants': '27'},
+    {'Remnants': '56'},
+    {'Remnants': '12'), ...
+      ]
+
+    Пример некорректного исполнения функции:
+        zipfile.BadZipfile: если архив поврежден.
+        FileNotFoundError: если excel-файл не найден.
     """
     # Скачать остатки с сайта
     casio_url = "https://timeworld.ru/upload/files/ostatki.zip"
@@ -178,25 +274,29 @@ def create_prices(watch_remnants, offer_ids):
 
 
 def price_conversion(price: str) -> str:
-    """
-    Преобразовывает цену в строку без остатков и лишних знаков.
-
-    Пример:
-        5'990.00 руб. -> 5990
+    """Преобразовывает цену в строку без остатков и лишних знаков.
 
     Аргументы:
         price(str): Строка с ценой.
 
     Возвращает:
         (str): Строка с ценой без лишних знаков.
-    """
 
+    Пример:
+        5'990.00 руб. -> 5990
+    """
     return re.sub("[^0-9]", "", price.split(".")[0])
 
 
 def divide(lst: list, n: int):
-    """
-    Разделяет список lst на части по n элементов
+    """Разделяет список lst на части по n элементов
+
+    Аргументы:
+        lst(list): Список.
+        n(int): Число.
+  
+    Возвращает:
+
     """
     for i in range(0, len(lst), n):
         yield lst[i : i + n]
