@@ -20,7 +20,7 @@ def get_product_list(last_id, client_id, seller_token):
         seller_token(str): Секретный пароль продавца.
 
     Возвращает:
-        (dict): Словарь json с данными о товарах.
+        (dict): Данные о товарах.
 
     Пример корректного использования функции:
     {
@@ -116,7 +116,7 @@ def update_price(prices: list, client_id, seller_token):
         seller_token(str): Секретный пароль продавца.
 
     Возвращает:
-        (dict): Словарь json с данными о товаре и цен.
+        (dict): Данные с товами и их ценами.
 
     Пример корректного использования функции:
     {
@@ -208,7 +208,7 @@ def download_stock():
     Возвращает:
         (list): Список словарей с данными об остатках товара.
 
-    Пример некорректного исполнения функции:
+    Исключения:
         zipfile.BadZipfile: если архив поврежден.
         FileNotFoundError: если excel-файл не найден.
     """
@@ -232,6 +232,16 @@ def download_stock():
 
 
 def create_stocks(watch_remnants, offer_ids):
+    """Создает список с отстатками товара.
+
+    Аргументы:
+        watch_remnants(list): Список словарей с данными об остатках товара.
+        offer_ids(list): Артикулы на товары.
+        warehouse_id(int): Идентификатор склада.
+    
+    Возвращает:
+        (list): Количество остатков товара на складе.
+    """
     # Уберем то, что не загружено в seller
     stocks = []
     for watch in watch_remnants:
@@ -252,6 +262,15 @@ def create_stocks(watch_remnants, offer_ids):
 
 
 def create_prices(watch_remnants, offer_ids):
+    """Устанавливает цены.
+
+    Аргументы:
+        watch_remnants(list): Список словарей с данными об остатках товара.
+        offer_ids(list): Артикулы на товары.
+
+    Возвращает:
+        (list): Список с ценами товаров.
+    """
     prices = []
     for watch in watch_remnants:
         if str(watch.get("Код")) in offer_ids:
@@ -303,6 +322,16 @@ def divide(lst: list, n: int):
 
 
 async def upload_prices(watch_remnants, client_id, seller_token):
+    """Асинхронная функция, которая загружает цены товаров.
+
+    Аргументы:
+        watch_remnants(list): Список словарей с данными об остатках товара.
+        client_id(str): Идентификатор клиента.
+        seller_token(str): Секретный пароль продавца.
+    
+    Возвращает:
+        (list): Список с ценами товаров.
+    """
     offer_ids = get_offer_ids(client_id, seller_token)
     prices = create_prices(watch_remnants, offer_ids)
     for some_price in list(divide(prices, 1000)):
@@ -311,6 +340,17 @@ async def upload_prices(watch_remnants, client_id, seller_token):
 
 
 async def upload_stocks(watch_remnants, client_id, seller_token):
+    """Асинхронная функция, загружает количество остатков товаров.
+
+    Аргументы:
+        watch_remnants(list): Список словарей с данными об остатках товара.
+        client_id(str): Идентификатор клиента.
+        seller_token(str): Секретный пароль продавца.
+    
+    Возвращает:
+        not_empty(list): Остатки товаров, количество котрых больше 0.
+        stocks(list): Остатки товара на складе.
+    """
     offer_ids = get_offer_ids(client_id, seller_token)
     stocks = create_stocks(watch_remnants, offer_ids)
     for some_stock in list(divide(stocks, 100)):

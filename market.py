@@ -19,7 +19,7 @@ def get_product_list(page, campaign_id, access_token):
         access_token(str): Пароль для входа.
 
     Возвращает:
-        (dict): Словарь json с информацией о товарах.
+        (dict): Информация о товарах.
 
     Пример корректного использования:
         {
@@ -148,7 +148,7 @@ def update_stocks(stocks, campaign_id, access_token):
         access_token(str): Пароль для входа.
 
     Возвращает:
-        (dict): Пустой словарь
+        (dict): Статус ответа сервера.
 
     Пример корректного использования:
     {
@@ -190,7 +190,7 @@ def update_price(prices, campaign_id, access_token):
         access_token(str): Пароль для входа.
 
     Возвращает:
-        (dict): Пустой словарь.
+        (dict): Статус ответа сервера.
 
     Пример корректного использования:
     {
@@ -256,7 +256,7 @@ def create_stocks(watch_remnants, offer_ids, warehouse_id):
         warehouse_id(int): Идентификатор склада.
     
     Возвращает:
-        (list): Количество остатков товара на складе.
+        (list): Остатки товара на складе.
     """
     # Уберем то, что не загружено в market
     stocks = list()
@@ -332,6 +332,16 @@ def create_prices(watch_remnants, offer_ids):
 
 
 async def upload_prices(watch_remnants, campaign_id, market_token):
+    """Асинхронная функция, которая загружает цены товаров.
+
+    Аргументы:
+        watch_remnants(list): Список словарей с данными об остатках товара.
+        offer_ids(list): Артикулы на товары.
+        market_token(str): Пароль магазина.
+
+    Возвращает:
+        (list): Список с отправленными ценами товаров.
+    """
     offer_ids = get_offer_ids(campaign_id, market_token)
     prices = create_prices(watch_remnants, offer_ids)
     for some_prices in list(divide(prices, 500)):
@@ -340,6 +350,19 @@ async def upload_prices(watch_remnants, campaign_id, market_token):
 
 
 async def upload_stocks(watch_remnants, campaign_id, market_token, warehouse_id):
+    """Асинхронная функция, загружает количество остатков товаров.
+
+    Аргументы:
+        watch_remnants(list): Список словарей с данными об остатках товара.
+        offer_ids(list): Артикулы на товары.
+        market_token(str): Пароль магазина.
+        warehouse_id(int): Идентификатор склада.
+
+    Возвращает:
+        stocks(list): Количество остатков товара на складе.
+        not_empty(list): Остатки товаров, количество котрых больше 0.
+
+    """
     offer_ids = get_offer_ids(campaign_id, market_token)
     stocks = create_stocks(watch_remnants, offer_ids, warehouse_id)
     for some_stock in list(divide(stocks, 2000)):
