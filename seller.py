@@ -22,40 +22,6 @@ def get_product_list(last_id, client_id, seller_token):
     Возвращает:
         (dict): Данные о товарах.
 
-    Пример корректного использования функции:
-    {
-        "items": [
-            {
-                "archived": True,
-                "has_fbo_stocks": True,
-                "has_fbs_stocks": True,
-                "is_discounted": True,
-                "offer_id": "136748",
-                "product_id": 223681945,
-                "quants": [
-                    {
-                        "quant_code": "string",
-                        "quant_size": 0
-                    }
-                ]
-            }
-        ],
-        "total": 1,
-        "last_id": "bnVсbA=="
-    }
-
-    Пример некорректного исполнения функции:
-    {
-      "code": 0,
-      "details": [
-        {
-          "typeUrl": "string",
-          "value": "string"
-        }
-      ],
-      "message": "string"
-    }
-
     """
     url = "https://api-seller.ozon.ru/v2/product/list"
     headers = {
@@ -85,12 +51,6 @@ def get_offer_ids(client_id, seller_token):
     Возвращает:
         (list): Артикулы на товары.
 
-    Пример корректного использования функции:
-        ["136748", "563421", "036492"]
-
-    Пример некорректного исполнения функции:
-        None
-
     """
     last_id = ""
     product_list = []
@@ -118,30 +78,6 @@ def update_price(prices: list, client_id, seller_token):
     Возвращает:
         (dict): Данные с товами и их ценами.
 
-    Пример корректного использования функции:
-    {
-      "result": [
-        {
-          "product_id": 1386,
-          "offer_id": "PH8865",
-          "updated": True,
-          "errors": []
-        }
-      ]
-    }
-
-    Пример некорректного исполнения функции:
-    {
-      "code": 0,
-      "details": [
-        {
-          "typeUrl": "string",
-          "value": "string"
-        }
-      ],
-      "message": "string"
-    }
-
     """
     url = "https://api-seller.ozon.ru/v1/product/import/prices"
     headers = {
@@ -164,30 +100,6 @@ def update_stocks(stocks: list, client_id, seller_token):
 
     Возвращает:
         (dict): Словарь с данными ответа API о статусе обновления и остатках.
-
-    Пример корректного использования функции:
-    {
-      "result": [
-        {
-          "product_id": 55946,
-          "offer_id": "PG-2404С1",
-          "updated": True,
-          "errors": []
-        }
-      ]
-    }
-
-    Пример некорректного исполнения функции:
-    {
-      "code": 0,
-      "details": [
-        {
-          "typeUrl": "string",
-          "value": "string"
-        }
-      ],
-      "message": "string"
-    }
 
     """
     url = "https://api-seller.ozon.ru/v1/product/import/stocks"
@@ -237,7 +149,6 @@ def create_stocks(watch_remnants, offer_ids):
     Аргументы:
         watch_remnants(list): Список словарей с данными об остатках товара.
         offer_ids(list): Артикулы на товары.
-        warehouse_id(int): Идентификатор склада.
     
     Возвращает:
         (list): Количество остатков товара на складе.
@@ -301,21 +212,24 @@ def price_conversion(price: str) -> str:
 
 
 def divide(lst: list, n: int):
-    """Разделяет список lst на части по n элементов
+    """Разделяет список lst на части по n элементов.
 
     Аргументы:
         lst(list): Список.
         n(int): Число.
   
     Пример:
-        lst = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        n = 3
+        >>> lst = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        >>> n = 3
 
-    Возвращает:
         [1, 2, 3]
         [4, 5, 6]
         [7, 8, 9]
         [10]
+
+    Возвращает:
+        (list): Несколько списков, в каждом из которых
+                присутсвует заданное количество элементов.
     """
     for i in range(0, len(lst), n):
         yield lst[i : i + n]

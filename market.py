@@ -20,106 +20,6 @@ def get_product_list(page, campaign_id, access_token):
 
     Возвращает:
         (dict): Информация о товарах.
-
-    Пример корректного использования:
-        {
-        "result": {
-            "paging": {
-                "nextPageToken": "string",
-                "prevPageToken": "string"
-            },
-            "offerMappingEntries": [
-                {
-                    "offer": {
-                        "name": "Ударная дрель Makita HP1630, 710 Вт",
-                        "shopSku": "string",
-                        "category": "string",
-                        "vendor": "LEVENHUK",
-                        "vendorCode": "VNDR-0005A",
-                        "description": "string",
-                        "id": "string",
-                        "feedId": 0,
-                        "barcodes": [
-                            46012300000000
-                        ],
-                        "urls": [
-                            "string"
-                        ],
-                        "pictures": [
-                            "string"
-                        ],
-                        "manufacturer": "string",
-                        "manufacturerCountries": [
-                            "string"
-                        ],
-                        "minShipment": 0,
-                        "transportUnitSize": 0,
-                        "quantumOfSupply": 0,
-                        "deliveryDurationDays": 0,
-                        "boxCount": 0,
-                        "customsCommodityCodes": [
-                            "string"
-                        ],
-                        "weightDimensions": {
-                            "length": 65.55,
-                            "width": 50.7,
-                            "height": 20,
-                            "weight": 1.001
-                        },
-                        "supplyScheduleDays": [
-                            "MONDAY"
-                        ],
-                        "shelfLifeDays": 0,
-                        "lifeTimeDays": 0,
-                        "guaranteePeriodDays": 0,
-                        "processingState": {
-                            "status": "UNKNOWN",
-                            "notes": [
-                                {
-                                    "type": "ASSORTMENT",
-                                    "payload": "string"
-                                }
-                            ]
-                        },
-                        "availability": "ACTIVE",
-                        "shelfLife": {
-                            "timePeriod": 0,
-                            "timeUnit": "HOUR",
-                            "comment": "string"
-                        },
-                        "lifeTime": {
-                            "timePeriod": 0,
-                            "timeUnit": "HOUR",
-                            "comment": "string"
-                        },
-                        "guaranteePeriod": {
-                            "timePeriod": 0,
-                            "timeUnit": "HOUR",
-                            "comment": "string"
-                        },
-                        "certificate": "string",
-                        "price": 0
-                    },
-                    "mapping": {
-                        "marketSku": 0,
-                        "modelId": 0,
-                        "categoryId": 0
-                    },
-                    "awaitingModerationMapping": {
-                        "marketSku": 0,
-                        "modelId": 0,
-                        "categoryId": 0
-                    },
-                    "rejectedMapping": {
-                        "marketSku": 0,
-                        "modelId": 0,
-                        "categoryId": 0
-                    }
-                }
-            ]
-        }
-
-    
     """
     endpoint_url = "https://api.partner.market.yandex.ru/"
     headers = {
@@ -150,21 +50,6 @@ def update_stocks(stocks, campaign_id, access_token):
     Возвращает:
         (dict): Статус ответа сервера.
 
-    Пример корректного использования:
-    {
-        "status": "OK"
-    }
-
-    Пример некорректного использования:
-    {
-        "status": "OK",
-        "errors": [
-            {
-                "code": "string",
-                "message": "string"
-            }
-        ]
-    }
     """
     endpoint_url = "https://api.partner.market.yandex.ru/"
     headers = {
@@ -192,21 +77,6 @@ def update_price(prices, campaign_id, access_token):
     Возвращает:
         (dict): Статус ответа сервера.
 
-    Пример корректного использования:
-    {
-        "status": "OK"
-    }
-
-    Пример некорректного использования:
-    {
-        "status": "OK",
-        "errors": [
-            {
-                "code": "string",
-                "message": "string"
-            }
-        ]
-    }
     """
     endpoint_url = "https://api.partner.market.yandex.ru/"
     headers = {
@@ -356,7 +226,7 @@ async def upload_stocks(watch_remnants, campaign_id, market_token, warehouse_id)
         watch_remnants(list): Список словарей с данными об остатках товара.
         offer_ids(list): Артикулы на товары.
         market_token(str): Пароль магазина.
-        warehouse_id(int): Идентификатор склада.
+        warehouse_id(list): Идентификатор склада.
 
     Возвращает:
         stocks(list): Количество остатков товара на складе.
