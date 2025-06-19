@@ -226,7 +226,7 @@ async def upload_stocks(watch_remnants, campaign_id, market_token, warehouse_id)
         watch_remnants(list): Список словарей с данными об остатках товара.
         offer_ids(list): Артикулы на товары.
         market_token(str): Пароль магазина.
-        warehouse_id(list): Идентификатор склада.
+        warehouse_id(int): Идентификатор склада.
 
     Возвращает:
         stocks(list): Количество остатков товара на складе.
