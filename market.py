@@ -15,7 +15,7 @@ def get_product_list(page, campaign_id, access_token):
     
     Аргументы:
         page(str): Идентификатор страницы c результатами.
-        campaign_id(int): Идентификатор кампании.
+        campaign_id(str): Идентификатор кампании.
         access_token(str): Пароль для входа.
 
     Возвращает:
@@ -44,7 +44,7 @@ def update_stocks(stocks, campaign_id, access_token):
 
     Аргументы:
         stocks(DTO): Данные об остатках товаров.
-        campaign_id(int): Идентификатор кампании.
+        campaign_id(str): Идентификатор кампании.
         access_token(str): Пароль для входа.
 
     Возвращает:
@@ -71,7 +71,7 @@ def update_price(prices, campaign_id, access_token):
     
     Аргументы:
         prices(DTO): Цена с указанием скидки, валюты и времени последнего обновления.
-        campaign_id(int): Идентификатор кампании.
+        campaign_id(str): Идентификатор кампании.
         access_token(str): Пароль для входа.
 
     Возвращает:
@@ -97,7 +97,7 @@ def get_offer_ids(campaign_id, market_token):
     """Получает артикулы товаров Яндекс маркета.
 
     Аргументы:
-        campaign_id(int): Идентификатор кампании.
+        campaign_id(str): Идентификатор кампании.
         market_token(str): Пароль магазина.
 
     Возвращает:
@@ -123,7 +123,7 @@ def create_stocks(watch_remnants, offer_ids, warehouse_id):
     Аргументы:
         watch_remnants(list): Список словарей с данными об остатках товара.
         offer_ids(list): Артикулы на товары.
-        warehouse_id(int): Идентификатор склада.
+        warehouse_id(str): Идентификатор склада.
     
     Возвращает:
         (list): Остатки товара на складе.
@@ -226,7 +226,7 @@ async def upload_stocks(watch_remnants, campaign_id, market_token, warehouse_id)
         watch_remnants(list): Список словарей с данными об остатках товара.
         offer_ids(list): Артикулы на товары.
         market_token(str): Пароль магазина.
-        warehouse_id(list): Идентификатор склада.
+        warehouse_id(str): Идентификатор склада.
 
     Возвращает:
         stocks(list): Количество остатков товара на складе.
